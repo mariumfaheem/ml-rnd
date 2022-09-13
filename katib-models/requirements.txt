@@ -1,0 +1,5 @@
+tensorflow
+tensorflow-datasets
+pyyaml
+h5py
+dill
