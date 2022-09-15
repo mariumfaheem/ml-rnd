@@ -1,0 +1,32 @@
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: katib-ui-ingress
+  labels:
+    app:  katib-ui-ingress
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=1200
+    alb.ingress.kubernetes.io/group.name: bdp-external-ingress-alb
+    alb.ingress.kubernetes.io/load-balancer-name: bdp-external-ingress-alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:256199385484:certificate/f8acc85a-2508-4d8e-b264-e62613e4e63f
+    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+
+
+spec:
+  rules:
+    - host: "katib.buraq.bazaar-data.com"
+      http:
+        paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: katib-ui
+                port:
+                  number: 80
